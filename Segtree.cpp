@@ -24,6 +24,7 @@ class segtree{ // traditional
         }
         if((rr+lr)/2>=i) update(i,x,2*ind,lr,(rr+lr)/2);
         else update(i,x,2*ind+1,(rr+lr)/2+1,rr);
+        v[ind]=v[2*ind]+v[2*ind+1];
         vmx[ind]=max(vmx[2*ind],vmx[2*ind+1]);
         vmn[ind]=min(vmn[2*ind],vmn[2*ind+1]);
     }
