@@ -1,42 +1,67 @@
 class segtree{ // traditional 
     public:
-    vl v;
+    vl vmx,vmn,v;
     ll sz; //sz=size of btm layer
  
     segtree(ll n){
         sz=1;
         while(sz<n) sz*=2;
         v.assign(sz*2,0);
+        vmx.assign(sz*2,-inf);
+        vmn.assign(sz*2,inf);
     }
  
     void update(ll i,ll x){
         update(i,x,1,0,sz-1);
     }
- 
-    ll sum(ll l, ll r){
-        return sum(l,r,1,0,sz-1);
-    }
- 
+
     void update(ll i, ll x, ll ind, ll lr, ll rr){
         if(ind>=sz){
             v[ind]=x;
+            vmx[ind]=x;
+            vmn[ind]=x;
             return;
         }
         if((rr+lr)/2>=i) update(i,x,2*ind,lr,(rr+lr)/2);
         else update(i,x,2*ind+1,(rr+lr)/2+1,rr);
-        v[ind]=v[2*ind]+v[2*ind+1];
+        vmx[ind]=max(vmx[2*ind],vmx[2*ind+1]);
+        vmn[ind]=min(vmn[2*ind],vmn[2*ind+1]);
     }
- 
+
+    ll sum(ll l, ll r){
+        return sum(l,r,1,0,sz-1);
+    }
+
     ll sum(ll l, ll r, ll ind, ll lr, ll rr){
         if(l>rr || r<lr) return 0;
         if(l<=lr && r>=rr) return v[ind];
         return sum(l,r,2*ind,lr,(lr+rr)/2)+sum(l,r,2*ind+1,(lr+rr)/2+1,rr);
     }
 
+    ll mx(ll l, ll r){
+        return mx(l,r,1,0,sz-1);
+    }
+ 
+    ll mx(ll l, ll r, ll ind, ll lr, ll rr){
+        if(l>rr || r<lr) return -inf;
+        if(l<=lr && r>=rr) return vmx[ind];
+        return max(mx(l,r,2*ind,lr,(lr+rr)/2),mx(l,r,2*ind+1,(lr+rr)/2+1,rr));
+    }
+
+    ll mn(ll l, ll r){
+        return mn(l,r,1,0,sz-1);
+    }
+
+    ll mn(ll l, ll r, ll ind, ll lr, ll rr){
+        if(l>rr || r<lr) return inf;
+        if(l<=lr && r>=rr) return vmn[ind];
+        return min(mn(l,r,2*ind,lr,(lr+rr)/2),mn(l,r,2*ind+1,(lr+rr)/2+1,rr));
+    }
+
     void print(){
         ll i,j;
         fr(i,2*sz){
-            if(i) cout<<v[i]<<' ';
+            if(i) cout<<vmx[i]<<' ';
             ll c=0;
             fr(j,32) if((1<<j)&(1+i)) c++;
             if(c==1) cout<<endl;

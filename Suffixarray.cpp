@@ -3,7 +3,7 @@ class suffixarray{
     ll n;
     string s;
     vl ind; // ind stores perm after sorting, ec stores eq classes of sorted suffixes
-    vl lcp; // lowest common prefix
+    vl lcp; // lowest common prefix, lcp[i] is the lcp of i and i-1 
 
     suffixarray(string& s1){
         ll i;

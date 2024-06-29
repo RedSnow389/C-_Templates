@@ -112,3 +112,6 @@ int main(){
     mh.print();
     return 0;
 }
+
+/*
+if(2*x+1)<size/
